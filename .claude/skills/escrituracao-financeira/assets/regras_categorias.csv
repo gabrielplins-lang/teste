@@ -1,0 +1,20 @@
+padrao,categoria,tipo
+# Regras avaliadas de cima para baixo; a primeira que casar vence. padrao = expressão regular (sem diferenciar maiúsculas).
+# tipo: receita | despesa | imposto | pessoal | transferencia | retirada | aporte
+# Edite/adicione linhas com os nomes que aparecem no SEU extrato (clientes, fornecedores, seu próprio nome).
+# Para marcar vendas, adicione regras de receita com nomes de clientes/plataformas, ex.: maria cliente|mercado pago|pagseguro|stone,Vendas / serviços prestados,receita
+simples nacional|\bdas\b|pgmei|receita federal|darf,Impostos - DAS MEI,imposto
+multa|juros de mora,Juros e multas,despesa
+tarifa|cesta de servi|anuidade,Tarifas bancárias,despesa
+aplica[cç][aã]o|resgate|rdb|caixinha|cdb,Aplicação/resgate (não é receita),transferencia
+pagamento de fatura|pagamento recebido|fatura nubank,Pagamento de fatura do cartão,transferencia
+ifood|rappi|uber eats|z[eé] delivery,Alimentação (verificar se é pessoal),pessoal
+netflix|spotify|disney|hbo|prime video|globoplay,Assinaturas pessoais,pessoal
+farm[aá]cia|drogaria|droga raia|pague menos,Saúde (pessoal),pessoal
+uber|99app|99 pop|cabify,Transporte (confirmar se foi a trabalho),despesa
+\bposto\b|combust|shell|ipiranga|petrobras br,Combustível (confirmar uso comercial),despesa
+\bclaro\b|\bvivo\b|\btim\b|\boi\b|internet|telecom,Telefone e internet,despesa
+canva|google workspace|google \*|meta ads|facebook ads|adobe|hostinger|registro\.br|chatgpt|openai|anthropic|notion,Software e marketing,despesa
+mercado livre|shopee|amazon|magalu|aliexpress,Compras (separar mercadoria x pessoal),despesa
+atacad|assa[ií]|makro|fornecedor,Mercadorias / insumos,despesa
+aluguel,Aluguel,despesa
