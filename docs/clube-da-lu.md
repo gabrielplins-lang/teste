@@ -10,22 +10,27 @@ Documento de trabalho. Os números marcados como **(exemplo)** precisam ser conf
 | Entrega | Motoboy próprio |
 | Área | Jacarepaguá (Freguesia, Pechincha, Taquara, Tanque, Anil, Curicica…) |
 | Cardápio | ~10 opções |
-| Ticket médio | R$ 30 **(exemplo)** |
+| Preços | Pratos da Lu R$ 25 · Feijoada da Lu R$ 35 · Feijoada p/ 3 R$ 95 · Combo p/ 3 + Coca R$ 105 · Coca R$ 15 · Pudim GG R$ 70 (encomenda) |
+| Contato | WhatsApp (21) 99239-6228 · @feijucadalu · Rua dos Filósofos, 14, quadra 5 |
 | Frete avulso médio | R$ 7 **(exemplo)** |
 
 ## Estrutura dos planos
 
-| Plano | Desconto | Preço por refeição (base R$ 30) | Janela de entrega |
-|---|---|---|---|
-| Almoço | 10% | R$ 27,00 | 11h–13h |
-| Janta | 10% | R$ 27,00 | 18h–20h |
-| Almoço + janta | 15% | R$ 25,50 | as duas |
+Pratos do Clube: Estrogonofe, Lasanha, Panqueca à bolonhesa, Escondidinho à bolonhesa, Frango à parmegiana e Feijoada da Lu.
+
+| Plano | Desconto | Prato da Lu (R$ 25) | Feijoada (R$ 35) | Janela de entrega |
+|---|---|---|---|---|
+| Almoço | 10% | R$ 22,50 | R$ 31,50 (+ R$ 9,00) | 11h–13h |
+| Janta | 10% | R$ 22,50 | R$ 31,50 (+ R$ 9,00) | 18h–20h |
+| Almoço + janta | 15% | R$ 21,25 | R$ 29,75 (+ R$ 8,50) | as duas |
+
+O plano é cobrado pelo preço dos pratos de R$ 25; cada dia de feijoada soma o adicional. Sugestão padrão do calendário: feijoada às quartas e sábados.
 
 - Dias: **seg a sex** ou **seg a sáb**. O preço do mês é calculado com os dias reais de entrega do mês, sem feriados.
 - Pessoas: de 1 a 6 por plano (mesmo endereço).
 - Entrega grátis no Clube, sempre na janela fixa.
 
-Exemplo, novembro de 2026, seg a sex, 1 pessoa, almoço + janta: 19 dias úteis (descontando Finados e Consciência Negra) → 38 refeições × R$ 25,50 = **R$ 969,00**. Avulso com frete sairia R$ 1.406,00.
+Exemplo, novembro de 2026, seg a sex, 1 pessoa, almoço + janta: 19 dias úteis (descontando Finados e Consciência Negra) → 38 refeições × R$ 21,25 = **R$ 807,50**, mais o adicional dos dias de feijoada. Avulso com frete (R$ 7, exemplo) sairia R$ 1.216,00.
 
 ## Regras
 
@@ -52,7 +57,8 @@ Exemplo, novembro de 2026, seg a sex, 1 pessoa, almoço + janta: 19 dias úteis 
 ## Ainda falta saber
 
 - Quantas marmitas a mais por dia a cozinha aguenta?
-- Ticket médio real e frete cobrado hoje.
+- Frete cobrado hoje.
+- Arquivo original da logo (no protótipo ela foi redesenhada em vetor a partir do post).
 - Quais benefícios extras entram no Clube (a definir juntos).
 
 ## O app é o sistema da Lu
