@@ -1,0 +1,59 @@
+/* ---------- Sacola e checkout ---------- */
+.checkout { padding-bottom: 120px; }
+.checkout__store { display: flex; align-items: center; gap: 12px; padding: 16px; border-bottom: 8px solid var(--bg-2); }
+.checkout__store div { display: grid; gap: 2px; }
+.checkout__block { display: grid; gap: 14px; padding: 18px 16px; border-bottom: 8px solid var(--bg-2); }
+.checkout__bar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
+  max-width: var(--app-w); margin: 0 auto; display: grid; gap: 6px; text-align: center;
+  padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px));
+  background: var(--bg); border-top: 1px solid var(--line);
+}
+
+.cart-item { display: grid; grid-template-columns: 56px minmax(0, 1fr) auto; gap: 12px; align-items: center; }
+.cart-item__img { width: 56px; height: 56px; border-radius: var(--r-sm); }
+.cart-item__text { display: grid; gap: 2px; min-width: 0; font-size: 14.5px; }
+
+.eta { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--text-2); }
+.eta svg { color: var(--green); flex: none; }
+
+.pay-options { display: grid; gap: 8px; }
+.pay-option {
+  display: grid; grid-template-columns: 24px minmax(0, 1fr) 20px; gap: 12px; align-items: center;
+  padding: 14px; text-align: left; border: 1px solid var(--line); border-radius: var(--r); background: var(--surface);
+  transition: border-color 0.15s;
+}
+.pay-option svg { color: var(--text-2); }
+.pay-option span { display: grid; }
+.pay-option small { color: var(--text-2); font-size: 12.5px; }
+.pay-option.is-on { border-color: var(--red); }
+.pay-option.is-on svg { color: var(--red); }
+
+.summary-lines { display: grid; gap: 8px; font-size: 14.5px; }
+.summary-lines > div { display: flex; justify-content: space-between; gap: 12px; color: var(--text-2); font-variant-numeric: tabular-nums; }
+.summary-lines__total { color: var(--ink) !important; font-weight: 800; font-size: 16px; padding-top: 4px; }
+.summary-item { display: flex; justify-content: space-between; gap: 12px; font-size: 14.5px; font-variant-numeric: tabular-nums; }
+
+/* ---------- Acompanhamento do pedido ---------- */
+.track { padding: 20px 16px; display: grid; gap: 14px; border-bottom: 8px solid var(--bg-2); }
+.track__eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-3); }
+.track__title { font-size: 21px; font-weight: 800; }
+.track__steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+.track__steps li { display: grid; grid-template-columns: 26px 1fr; gap: 12px; align-items: center; min-height: 40px; color: var(--text-3); font-weight: 600; position: relative; }
+.track__steps li:not(:last-child)::after { content: ""; position: absolute; left: 12px; top: 30px; height: 20px; width: 2px; background: var(--line); }
+.track__steps li.is-done::after { background: var(--green); }
+.track__dot { width: 26px; height: 26px; border-radius: 50%; border: 2px solid var(--line); display: grid; place-items: center; color: #fff; }
+.track__steps li.is-done { color: var(--ink); }
+.track__steps li.is-done .track__dot { background: var(--green); border-color: var(--green); }
+.track__steps li.is-now { color: var(--ink); }
+.track__steps li.is-now .track__dot { border-color: var(--red); box-shadow: 0 0 0 4px var(--red-soft); background: var(--red); }
+
+.pix-box { margin: 16px; padding: 16px; border-radius: var(--r); background: var(--green-soft); display: grid; gap: 10px; }
+.pix-box__head { display: flex; align-items: center; gap: 8px; color: var(--green); font-size: 16px; }
+.pix-box__key { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 12px 14px; border-radius: var(--r-sm); background: var(--surface); border: 1px dashed var(--green); font-weight: 700; font-variant-numeric: tabular-nums; }
+.pedido .btn--whats { margin: 16px; width: calc(100% - 32px); }
+
+/* Lista de pedidos */
+.list { display: grid; }
+.order-card { display: grid; grid-template-columns: 44px minmax(0, 1fr) 18px; gap: 12px; align-items: center; padding: 16px; border-bottom: 1px solid var(--line); color: var(--text-3); }
+.order-card__text { display: grid; gap: 2px; color: var(--ink); min-width: 0; }

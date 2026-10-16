@@ -1,0 +1,27 @@
+{
+  "name": "feijuca-da-lu",
+  "private": true,
+  "description": "App de delivery e Clube de assinatura da Feijuca da Lu",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "concurrently -n api,web -c red,yellow \"npm run dev -w @feijuca/api\" \"npm run dev -w @feijuca/web\"",
+    "build": "npm run build -w @feijuca/api && npm run build -w @feijuca/web",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "db:up": "docker compose up -d db",
+    "db:migrate": "npm run db:migrate -w @feijuca/api",
+    "db:seed": "npm run db:seed -w @feijuca/api",
+    "db:demo": "npm run db:demo -w @feijuca/api",
+    "start": "npm run start -w @feijuca/api"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1",
+    "typescript": "^5.9.3"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

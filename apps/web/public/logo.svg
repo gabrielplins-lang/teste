@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+  <!-- Logo redesenhada a partir do post. Substitua pelo arquivo original da Lu quando tiver. -->
+  <circle cx="60" cy="60" r="57" fill="#1c1312" stroke="#f2b233" stroke-width="4"/>
+  <path d="M44 30c-6 0-9-7-4-11 2-6 10-7 13-2 3-6 13-5 15 1 6-2 11 5 7 10 3 4-1 9-5 8H48c-3 1-6-2-4-6z" fill="none" stroke="#f2b233" stroke-width="2.6" stroke-linejoin="round"/>
+  <path d="M49 30v7h22v-7" fill="none" stroke="#f2b233" stroke-width="2.6"/>
+  <text x="60" y="64" text-anchor="middle" font-family="Kaushan Script, Brush Script MT, cursive" font-size="27" fill="#ffffff">Feijuca</text>
+  <text x="62" y="88" text-anchor="middle" font-family="Kaushan Script, Brush Script MT, cursive" font-size="24" fill="#f2b233">da Lu</text>
+  <path d="M33 96h20M67 96h20" stroke="#d32f2f" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M60 101c-6-4-8-7-6-9.5 1.6-2 4.4-1.4 6 .8 1.6-2.2 4.4-2.8 6-.8 2 2.5 0 5.5-6 9.5z" fill="none" stroke="#d32f2f" stroke-width="2.2" stroke-linejoin="round"/>
+</svg>

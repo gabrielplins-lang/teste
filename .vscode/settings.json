@@ -1,0 +1,7 @@
+{
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "editor.tabSize": 2,
+  "files.eol": "\n",
+  "[prisma]": { "editor.defaultFormatter": "Prisma.prisma" },
+  "search.exclude": { "**/dist": true, "**/node_modules": true }
+}

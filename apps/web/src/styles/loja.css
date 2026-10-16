@@ -1,0 +1,95 @@
+/* ---------- Capa e identificação da loja ---------- */
+.store-cover {
+  position: relative; height: 168px; overflow: hidden;
+  background:
+    radial-gradient(circle at 85% 20%, rgba(242, 178, 51, 0.35), transparent 40%),
+    radial-gradient(circle at 10% 110%, rgba(0, 0, 0, 0.35), transparent 50%),
+    linear-gradient(135deg, #8f1016 0%, #b3171d 55%, #c7362a 100%);
+}
+.store-cover::after { /* textura de pincel */
+  content: ""; position: absolute; inset: 0; opacity: 0.12;
+  background-image: repeating-linear-gradient(-12deg, #fff 0 2px, transparent 2px 14px);
+}
+.store-cover__art { position: absolute; right: 18px; top: 18px; display: grid; justify-items: end; color: #fff; font-family: var(--f-brand); line-height: 1; transform: rotate(-4deg); z-index: 1; }
+.store-cover__kicker { font-size: 20px; opacity: 0.95; }
+.store-cover__big { font-size: 46px; color: #fff; text-shadow: 0 3px 0 rgba(0, 0, 0, 0.25); margin-block: 2px; }
+.store-cover__btn { position: absolute; left: 12px; top: calc(12px + env(safe-area-inset-top, 0px)); z-index: 2; width: 40px; height: 40px; border-radius: 50%; background: rgba(255, 255, 255, 0.95); color: var(--red); display: grid; place-items: center; box-shadow: var(--shadow-sm); }
+
+.store-id { display: flex; align-items: flex-start; gap: 14px; padding: 0 16px; margin-top: -42px; position: relative; z-index: 2; }
+.store-id__logo { border-radius: 50%; border: 4px solid var(--bg); background: var(--bg); box-shadow: var(--shadow-sm); flex: none; }
+.store-id__text { padding-top: 50px; min-width: 0; }
+.store-id__text h1 { font-size: 22px; font-weight: 800; }
+.store-id__text p { color: var(--text-2); font-size: 13.5px; }
+
+.store-meta { display: flex; flex-wrap: wrap; gap: 8px 16px; padding: 14px 16px 4px; font-size: 13.5px; color: var(--text-2); }
+.store-meta__item { display: inline-flex; align-items: center; gap: 6px; }
+.store-meta__item svg { color: var(--text-3); }
+.store-meta__item b { color: var(--green); font-weight: 700; }
+
+/* ---------- Cartão do Clube (preto e dourado, como a logo) ---------- */
+.club-card {
+  margin: 14px 16px 4px; padding: 14px 16px;
+  display: flex; align-items: center; gap: 12px;
+  background: var(--black); color: #fff; border-radius: var(--r);
+  position: relative; overflow: hidden;
+}
+.club-card::before { content: ""; position: absolute; right: -40px; top: -50px; width: 140px; height: 140px; border-radius: 50%; background: var(--gold); opacity: 0.18; }
+.club-card__text { display: grid; gap: 2px; min-width: 0; position: relative; }
+.club-card__brand { font-family: var(--f-brand); color: var(--gold); font-size: 20px; line-height: 1.1; }
+.club-card__text strong { font-size: 15px; }
+.club-card__text span:last-child { font-size: 12.5px; color: rgba(255, 255, 255, 0.72); }
+.club-card__cta { margin-left: auto; flex: none; display: inline-flex; align-items: center; gap: 2px; font-weight: 700; font-size: 13.5px; color: var(--black); background: var(--gold); padding: 8px 10px 8px 12px; border-radius: 999px; position: relative; }
+
+/* Busca */
+.search { margin: 14px 16px 0; height: 44px; padding: 0 14px; display: flex; align-items: center; gap: 10px; border-radius: var(--r-sm); background: var(--bg-2); color: var(--text-3); }
+.search input { flex: 1; min-width: 0; border: 0; background: none; outline: none; font-size: 15px; color: var(--ink); }
+
+/* Destaques */
+.featured__rail { display: grid; grid-auto-flow: column; grid-auto-columns: 148px; gap: 12px; overflow-x: auto; padding: 4px 16px 4px; scroll-snap-type: x mandatory; scroll-padding-inline: 16px; scrollbar-width: none; }
+.featured__rail::-webkit-scrollbar { display: none; }
+.featured__card { display: grid; gap: 4px; text-align: left; scroll-snap-align: start; }
+.featured__img { width: 148px; height: 112px; border-radius: var(--r); }
+.featured__name { font-size: 14px; font-weight: 600; line-height: 1.25; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.featured__card .price { font-size: 14px; }
+
+/* Abas de categoria fixas */
+.cat-tabs {
+  position: sticky; top: 0; z-index: 15;
+  display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none;
+  margin-top: 18px; padding: 0 12px; background: var(--bg); border-bottom: 1px solid var(--line);
+}
+.cat-tabs::-webkit-scrollbar { display: none; }
+.cat-tabs__tab { flex: none; height: 48px; padding: 0 10px; font-size: 14px; font-weight: 600; color: var(--text-2); border-bottom: 2px solid transparent; white-space: nowrap; }
+.cat-tabs__tab.is-active { color: var(--red); border-bottom-color: var(--red); }
+
+/* Cardápio */
+.menu__section { scroll-margin-top: 56px; }
+.product-row {
+  width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) 104px; gap: 14px; align-items: start;
+  padding: 16px; text-align: left; border-bottom: 1px solid var(--line); transition: background 0.15s;
+}
+.product-row:hover { background: var(--bg-2); }
+.product-row__text { display: grid; gap: 6px; min-width: 0; }
+.product-row__text h3 { font-size: 15.5px; font-weight: 600; }
+.product-row__desc { color: var(--text-2); font-size: 13.5px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.product-row__price { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+.product-row__price s { color: var(--text-3); font-size: 13px; }
+.product-row__img { width: 104px; height: 104px; border-radius: var(--r); border: 1px solid var(--line); }
+.club-hint { justify-self: start; display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 700; color: #8a5a00; background: var(--gold-soft); padding: 3px 8px; border-radius: 6px; }
+@media (prefers-color-scheme: dark) { .club-hint { color: var(--gold); } }
+
+/* Detalhe do produto */
+.product-sheet .sheet__body { padding: 0 0 16px; }
+.product-sheet__hero { position: relative; height: 230px; display: grid; place-items: center; overflow: hidden; background: var(--black); }
+.product-sheet__blur { position: absolute; inset: -30px; background-size: cover; background-position: center; filter: blur(26px) saturate(1.2); opacity: 0.75; }
+.product-sheet__img { position: relative; width: 176px; height: 176px; border-radius: 20px; object-fit: cover; box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45); }
+.product-sheet__info { display: grid; gap: 8px; padding: 18px 20px 4px; }
+.product-sheet__info h2 { font-size: 20px; font-weight: 800; }
+.product-sheet__info p { color: var(--text-2); font-size: 14.5px; }
+.product-sheet__notes { padding: 6px 20px 0; display: grid; gap: 8px; }
+.product-sheet__footer { display: flex; gap: 12px; }
+
+/* Rodapé da loja */
+.store-footer { display: grid; justify-items: center; gap: 6px; text-align: center; padding: 32px 24px 8px; color: var(--text-2); font-size: 13px; }
+.store-footer__slogan { font-family: var(--f-brand); color: var(--red); font-size: 20px; }
+.store-footer a { display: inline-flex; align-items: center; gap: 4px; font-weight: 600; color: var(--ink); }

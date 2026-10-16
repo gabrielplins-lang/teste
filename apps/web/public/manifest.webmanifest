@@ -1,0 +1,11 @@
+{
+  "name": "Feijuca da Lu",
+  "short_name": "Feijuca da Lu",
+  "description": "Feijoada e comida caseira com entrega em Jacarepaguá",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#b3171d",
+  "lang": "pt-BR",
+  "icons": [{ "src": "/logo.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }]
+}

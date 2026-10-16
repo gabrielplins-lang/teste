@@ -1,0 +1,190 @@
+// Banco de dados da Feijuca da Lu. Dinheiro sempre em centavos (Int).
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ---------- Cardápio ----------
+
+model Category {
+  id       String    @id @default(cuid())
+  slug     String    @unique
+  name     String
+  position Int       @default(0)
+  products Product[]
+}
+
+model Product {
+  id             String  @id @default(cuid())
+  slug           String  @unique
+  name           String
+  description    String  @default("")
+  priceCents     Int
+  compareAtCents Int?
+  imageUrl       String?
+  active         Boolean @default(true)
+  featured       Boolean @default(false)
+  clubEligible   Boolean @default(false)
+  preorder       Boolean @default(false) // só por encomenda
+  serves         Int     @default(1)
+  position       Int     @default(0)
+
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id])
+
+  orderItems       OrderItem[]
+  subscriptionDays SubscriptionDay[]
+}
+
+model DeliveryZone {
+  id           String @id @default(cuid())
+  neighborhood String @unique
+  feeCents     Int
+  etaMin       Int    @default(30)
+  etaMax       Int    @default(50)
+}
+
+// ---------- Clientes ----------
+
+model Customer {
+  id            String         @id @default(cuid())
+  name          String
+  phone         String         @unique // só dígitos, com DDD
+  createdAt     DateTime       @default(now())
+  orders        Order[]
+  subscriptions Subscription[]
+}
+
+// ---------- Pedidos avulsos (app, WhatsApp, iFood) ----------
+
+enum Channel {
+  APP
+  WHATSAPP
+  IFOOD
+  CLUB
+}
+
+enum OrderStatus {
+  NEW
+  PREPARING
+  OUT_FOR_DELIVERY
+  DELIVERED
+  CANCELED
+}
+
+enum Fulfillment {
+  DELIVERY
+  PICKUP
+}
+
+enum PaymentMethod {
+  PIX
+  CARD
+  CASH
+  IFOOD
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+}
+
+model Order {
+  id               String        @id @default(cuid())
+  number           Int           @unique @default(autoincrement())
+  channel          Channel       @default(APP)
+  status           OrderStatus   @default(NEW)
+  fulfillment      Fulfillment   @default(DELIVERY)
+  customerName     String
+  customerPhone    String
+  addressLine      String?
+  neighborhood     String?
+  paymentMethod    PaymentMethod
+  paymentStatus    PaymentStatus @default(PENDING)
+  changeForCents   Int?
+  subtotalCents    Int
+  deliveryFeeCents Int
+  totalCents       Int
+  notes            String?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  customerId String?
+  customer   Customer?   @relation(fields: [customerId], references: [id])
+  items      OrderItem[]
+
+  @@index([createdAt])
+  @@index([status])
+}
+
+model OrderItem {
+  id             String  @id @default(cuid())
+  name           String // cópia do nome no momento do pedido
+  unitPriceCents Int
+  quantity       Int
+  notes          String?
+
+  orderId   String
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+}
+
+// ---------- Clube da Lu ----------
+
+enum Meals {
+  LUNCH
+  DINNER
+  BOTH
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  PAUSED
+  PAYMENT_FAILED
+  CANCELED
+}
+
+enum ClubPayment {
+  PIX
+  CARD
+}
+
+model Subscription {
+  id            String             @id @default(cuid())
+  month         String // "YYYY-MM"
+  meals         Meals
+  weekdays      Int // 5 = seg a sex, 6 = seg a sáb
+  people        Int                @default(1)
+  status        SubscriptionStatus @default(ACTIVE)
+  paymentMethod ClubPayment
+  lunchAddress  String?
+  dinnerAddress String?
+  neighborhood  String?
+  createdAt     DateTime           @default(now())
+
+  customerId String
+  customer   Customer          @relation(fields: [customerId], references: [id])
+  days       SubscriptionDay[]
+
+  @@index([month])
+}
+
+model SubscriptionDay {
+  id     String  @id @default(cuid())
+  date   String // "YYYY-MM-DD"
+  paused Boolean @default(false)
+
+  subscriptionId String
+  subscription   Subscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+  productId      String
+  product        Product      @relation(fields: [productId], references: [id])
+
+  @@unique([subscriptionId, date])
+  @@index([date])
+}

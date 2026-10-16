@@ -1,0 +1,58 @@
+/*
+ * Identidade da Feijuca da Lu aplicada no padrão dos apps de delivery:
+ * vermelho do flyer como cor de ação, preto e dourado da logo no Clube, fundo branco limpo.
+ */
+:root {
+  --red: #b3171d;
+  --red-hover: #96121a;
+  --red-soft: #fdeeee;
+  --gold: #f2b233;
+  --gold-soft: #fff5dc;
+  --black: #1c1312; /* preto da logo, igual nos dois temas */
+  --ink: #1f1717;
+  --text-2: #6f6464;
+  --text-3: #a39a98;
+  --line: #eee8e6;
+  --bg: #ffffff;
+  --bg-2: #f6f3f1;
+  --surface: #ffffff;
+  --green: #18874a;
+  --green-soft: #e5f5eb;
+  --whats: #1fa855;
+  --on-red: #ffffff;
+  --shadow-sm: 0 1px 2px rgba(31, 23, 23, 0.06);
+  --shadow: 0 2px 8px rgba(31, 23, 23, 0.08), 0 12px 32px rgba(31, 23, 23, 0.08);
+
+  --f-body: "Figtree", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --f-brand: "Kaushan Script", "Brush Script MT", cursive;
+
+  --r-sm: 8px;
+  --r: 12px;
+  --r-lg: 18px;
+  --app-w: 600px;
+  --nav-h: 64px;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --red: #ef5350;
+    --red-hover: #f26b68;
+    --red-soft: #3a1b1c;
+    --gold: #f5bf4f;
+    --gold-soft: #362b15;
+    --ink: #f4eeea;
+    --text-2: #b8aca7;
+    --text-3: #857a76;
+    --line: #2e2827;
+    --bg: #141111;
+    --bg-2: #0e0c0c;
+    --surface: #1d1919;
+    --green: #4cc07d;
+    --green-soft: #15301f;
+    --on-red: #ffffff;
+    --shadow-sm: none;
+    --shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+    color-scheme: dark;
+  }
+}

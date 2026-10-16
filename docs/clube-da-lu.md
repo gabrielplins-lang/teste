@@ -80,6 +80,6 @@ Fases:
 2. **Clube da Lu** com Pix Automático e o piloto de 30 vagas.
 3. **Integração com o iFood** (API de pedidos do iFood para parceiros), para os pedidos do iFood caírem direto na fila. Exige cadastro e homologação no portal de desenvolvedores do iFood. Até lá, ela segue usando o tablet do iFood.
 
-## Protótipo
+## App
 
-`prototipo/index.html` é um protótipo navegável com 4 telas: Início (pedido avulso com convite ao Clube), Clube (montador de plano com preço do mês), Meu mês (calendário com escolha de prato e pausa) e Gestão (pedidos, cozinha, entregas, caixa e assinantes). Cardápio e preços são os reais da Lu; pedidos e números da gestão são exemplos.
+O protótipo foi substituído pelo app de verdade (veja o `README.md` na raiz): loja em `apps/web`, API em `apps/api` e regras do Clube em `packages/shared`. Os preços e regras deste documento estão implementados em `packages/shared/src/pricing.ts` e `calendar.ts`.
