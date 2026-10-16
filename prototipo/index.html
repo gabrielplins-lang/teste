@@ -1,0 +1,467 @@
+<title>Feijuca da Lu</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Figtree:wght@400;500;600;700;800&display=swap">
+<style>
+/* Layout: coluna única de app (até 440px) com navegação inferior fixa; 4 telas trocadas por abas */
+:root {
+  --bg: #f5f3ee;
+  --surface: #ffffff;
+  --ink: #241a1c;          /* feijão preto */
+  --muted: #6d6164;
+  --line: #e4ded6;
+  --couve: #2f6b3a;        /* verde couve */
+  --couve-soft: #e2eedf;
+  --laranja: #e8792b;      /* laranja da feijoada */
+  --laranja-soft: #fbe6d4;
+  --danger: #b4372f;
+  --on-accent: #ffffff;
+  --shadow: 0 1px 2px rgba(36,26,28,.06), 0 6px 18px rgba(36,26,28,.06);
+  --f-display: "Alfa Slab One", "Rockwell", Georgia, serif;
+  --f-body: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #171214; --surface: #221b1d; --ink: #f3ece6; --muted: #b3a7a2; --line: #3a3033;
+    --couve: #7fbf86; --couve-soft: #23362a; --laranja: #f39a55; --laranja-soft: #3c2a1d;
+    --danger: #ef7d73; --on-accent: #171214; --shadow: none; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #171214; --surface: #221b1d; --ink: #f3ece6; --muted: #b3a7a2; --line: #3a3033;
+  --couve: #7fbf86; --couve-soft: #23362a; --laranja: #f39a55; --laranja-soft: #3c2a1d;
+  --danger: #ef7d73; --on-accent: #171214; --shadow: none; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 15px; line-height: 1.45; }
+button { font: inherit; color: inherit; cursor: pointer; }
+button:focus-visible, input:focus-visible { outline: 2px solid var(--laranja); outline-offset: 2px; }
+.app { max-width: 440px; margin: 0 auto; min-height: 100vh; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 0 96px; }
+.proto-note { font-size: 12px; color: var(--muted); text-align: center; padding-block: 10px 0; }
+header.top { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 14px 10px; }
+.brand { font-family: var(--f-display); font-size: 24px; line-height: 1; letter-spacing: .2px; }
+.brand span { color: var(--laranja); }
+.addr { font-size: 12.5px; color: var(--muted); text-align: right; }
+.addr b { color: var(--ink); font-weight: 600; display: block; }
+h1, h2, h3 { margin: 0; text-wrap: balance; }
+h2 { font-family: var(--f-display); font-weight: 400; font-size: 21px; line-height: 1.15; }
+h3 { font-size: 15px; font-weight: 700; }
+.eyebrow { font-size: 11.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.stack { display: flex; flex-direction: column; gap: 14px; }
+.row { display: flex; gap: 10px; align-items: center; }
+.between { justify-content: space-between; }
+.muted { color: var(--muted); }
+.small { font-size: 13px; }
+.num { font-variant-numeric: tabular-nums; }
+section.screen { display: flex; flex-direction: column; gap: 22px; }
+
+/* Banner do clube */
+.club-banner { background: var(--ink); color: var(--bg); border-radius: 18px; padding: 18px; display: grid; gap: 10px; position: relative; overflow: hidden; }
+.club-banner::after { content: ""; position: absolute; right: -30px; top: -30px; width: 130px; height: 130px; border-radius: 50%; background: var(--laranja); opacity: .9; }
+.club-banner > * { position: relative; z-index: 1; }
+.club-banner h2 { font-size: 24px; max-width: 15ch; }
+.club-banner p { margin: 0; font-size: 14px; opacity: .85; max-width: 30ch; }
+.btn { border: 0; border-radius: 999px; padding: 12px 18px; font-weight: 700; font-size: 15px; }
+.btn-primary { background: var(--laranja); color: #241a1c; }
+.btn-couve { background: var(--couve); color: var(--on-accent); }
+.btn-ghost { background: transparent; border: 1.5px solid var(--line); }
+.btn-block { width: 100%; }
+.club-banner .btn { justify-self: start; }
+
+/* Cardápio */
+.chips { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 2px; }
+.chip { border: 1.5px solid var(--line); background: var(--surface); border-radius: 999px; padding: 6px 12px; font-size: 13px; font-weight: 600; white-space: nowrap; }
+.chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.dish { display: grid; grid-template-columns: 64px 1fr auto; gap: 12px; align-items: center; background: var(--surface); border-radius: 14px; padding: 10px; box-shadow: var(--shadow); }
+.dish .pic { width: 64px; height: 64px; border-radius: 10px; display: grid; place-items: center; font-family: var(--f-display); font-size: 22px; color: var(--on-accent); }
+.dish .info { min-width: 0; }
+.dish .info p { margin: 2px 0 0; font-size: 12.5px; color: var(--muted); }
+.price { font-weight: 700; font-variant-numeric: tabular-nums; }
+.price-club { font-size: 12px; color: var(--couve); font-weight: 700; display: block; }
+.add { width: 34px; height: 34px; border-radius: 50%; border: 0; background: var(--couve-soft); color: var(--couve); font-size: 20px; font-weight: 700; line-height: 1; }
+.tag { display: inline-block; font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 6px; background: var(--laranja-soft); color: var(--ink); margin-left: 4px; vertical-align: 1px; }
+
+.cartbar { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(76px + env(safe-area-inset-bottom, 0px)); width: min(408px, calc(100% - 32px)); background: var(--couve); color: var(--on-accent); border-radius: 14px; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; font-weight: 700; box-shadow: var(--shadow); z-index: 5; }
+.nudge { background: var(--laranja-soft); border-radius: 12px; padding: 12px 14px; font-size: 13.5px; }
+
+/* Clube: montador */
+.card { background: var(--surface); border-radius: 16px; padding: 16px; box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 12px; }
+.seg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.seg.two { grid-template-columns: repeat(2, 1fr); }
+.opt { border: 1.5px solid var(--line); background: var(--surface); border-radius: 12px; padding: 10px 8px; text-align: center; font-size: 13.5px; font-weight: 600; display: grid; gap: 2px; }
+.opt small { font-weight: 500; color: var(--muted); font-size: 11.5px; }
+.opt[aria-pressed="true"] { border-color: var(--couve); background: var(--couve-soft); }
+.stepper { display: flex; align-items: center; gap: 14px; }
+.stepper button { width: 36px; height: 36px; border-radius: 50%; border: 1.5px solid var(--line); background: var(--surface); font-size: 18px; font-weight: 700; }
+.stepper output { font-weight: 800; font-size: 18px; min-width: 2ch; text-align: center; }
+.summary { background: var(--ink); color: var(--bg); border-radius: 16px; padding: 18px; display: grid; gap: 8px; }
+.summary .big { font-family: var(--f-display); font-size: 34px; line-height: 1; }
+.summary .line { display: flex; justify-content: space-between; font-size: 13.5px; opacity: .9; font-variant-numeric: tabular-nums; }
+.summary .save { color: var(--laranja); font-weight: 800; }
+.perks { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; font-size: 14px; }
+.perks li { display: grid; grid-template-columns: 22px 1fr; gap: 8px; }
+.perks li::before { content: "✓"; color: var(--couve); font-weight: 800; }
+.rules { margin: 0; padding-left: 18px; display: grid; gap: 6px; font-size: 13.5px; color: var(--muted); }
+
+/* Calendário */
+.cal-head, .cal { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 5px; }
+.cal-head div { font-size: 11px; font-weight: 700; color: var(--muted); text-align: center; text-transform: uppercase; letter-spacing: .05em; }
+.day { aspect-ratio: 1 / 1.25; max-width: 100%; border-radius: 10px; border: 1.5px solid var(--line); background: var(--surface); padding: 4px; display: flex; flex-direction: column; justify-content: space-between; text-align: left; min-width: 0; }
+.day .d { font-size: 12px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.day .dot { height: 6px; border-radius: 3px; }
+.day .lbl { font-size: 9.5px; line-height: 1.1; color: var(--muted); overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.day.off { background: transparent; border-style: dashed; opacity: .55; cursor: default; }
+.day.paused { background: var(--laranja-soft); border-color: var(--laranja); }
+.day.sel { outline: 2px solid var(--ink); outline-offset: 1px; }
+.day.locked { opacity: .7; }
+.legend { display: flex; flex-wrap: wrap; gap: 12px; font-size: 12px; color: var(--muted); }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 5px; vertical-align: -1px; }
+.daypanel .choices { display: grid; gap: 8px; }
+.pick { display: flex; justify-content: space-between; align-items: center; gap: 8px; border: 1.5px solid var(--line); background: var(--surface); border-radius: 12px; padding: 10px 12px; text-align: left; font-size: 14px; font-weight: 600; }
+.pick[aria-pressed="true"] { border-color: var(--couve); background: var(--couve-soft); }
+.pick small { color: var(--muted); font-weight: 500; }
+.econ { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.econ div { background: var(--couve-soft); border-radius: 12px; padding: 12px; }
+.econ b { display: block; font-family: var(--f-display); font-weight: 400; font-size: 22px; font-variant-numeric: tabular-nums; }
+
+/* Painel da Lu */
+.kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.kpi { background: var(--surface); border-radius: 12px; padding: 12px; box-shadow: var(--shadow); }
+.kpi b { display: block; font-family: var(--f-display); font-weight: 400; font-size: 24px; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.kpi span { font-size: 11.5px; color: var(--muted); }
+.bars { display: grid; gap: 8px; }
+.bar { display: grid; grid-template-columns: minmax(0, 1fr) 36px; gap: 10px; align-items: center; font-size: 13.5px; }
+.bar .track { grid-column: 1 / -1; height: 8px; background: var(--line); border-radius: 4px; overflow: hidden; }
+.bar .fill { height: 100%; background: var(--couve); border-radius: 4px; }
+.bar b { text-align: right; font-variant-numeric: tabular-nums; }
+.route { display: grid; gap: 0; }
+.stop { display: grid; grid-template-columns: 70px minmax(0, 1fr) auto; gap: 10px; padding-block: 10px; border-bottom: 1px solid var(--line); font-size: 13.5px; align-items: center; }
+.stop:last-child { border-bottom: 0; }
+.stop .win { font-weight: 800; font-variant-numeric: tabular-nums; }
+.pill { font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 999px; white-space: nowrap; }
+.pill.ok { background: var(--couve-soft); color: var(--couve); }
+.pill.warn { background: var(--laranja-soft); color: var(--ink); }
+.pill.bad { background: var(--danger); color: var(--on-accent); }
+
+/* Navegação */
+nav.tabs { position: fixed; left: 0; right: 0; bottom: 0; background: var(--surface); border-top: 1px solid var(--line); padding-bottom: env(safe-area-inset-bottom, 0px); padding-left: max(8px, env(safe-area-inset-left, 0px)); padding-right: max(8px, env(safe-area-inset-right, 0px)); z-index: 6; }
+nav.tabs .inner { max-width: 440px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); }
+nav.tabs button { border: 0; background: none; padding: 10px 4px 12px; font-size: 12px; font-weight: 600; color: var(--muted); display: grid; justify-items: center; gap: 3px; }
+nav.tabs button svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+nav.tabs button[aria-current="page"] { color: var(--couve); }
+nav.tabs .lu { color: var(--laranja); }
+.toast { position: fixed; left: 50%; transform: translateX(-50%); top: calc(14px + env(safe-area-inset-top, 0px)); background: var(--ink); color: var(--bg); padding: 10px 16px; border-radius: 999px; font-size: 13.5px; font-weight: 600; z-index: 20; }
+@media (prefers-reduced-motion: no-preference) { section.screen { animation: in .25s ease-out; } @keyframes in { from { transform: translateY(6px); opacity: .6; } to { transform: none; opacity: 1; } } }
+</style>
+
+<div class="app">
+  <p class="proto-note">Protótipo navegável · cardápio, preços e pedidos são exemplos</p>
+  <header class="top">
+    <div class="brand">Feijuca <span>da Lu</span></div>
+    <div class="addr">Entregando em<b>Jacarepaguá</b></div>
+  </header>
+
+  <!-- INÍCIO -->
+  <section class="screen" id="s-inicio">
+    <div class="club-banner">
+      <span class="eyebrow" style="color:inherit;opacity:.7">Clube da Lu</span>
+      <h2>Almoço e janta o mês inteiro, sem pedir todo dia</h2>
+      <p id="banner-txt">A partir de R$ 27,00 por refeição, com entrega grátis em horário fixo.</p>
+      <button class="btn btn-primary" data-go="clube">Montar meu plano</button>
+    </div>
+
+    <div class="stack">
+      <div class="row between"><h2>Cardápio de hoje</h2><span class="small muted">peça até 14h</span></div>
+      <div class="chips" id="cats"></div>
+      <div class="stack" id="menu"></div>
+    </div>
+    <div class="nudge" id="nudge" hidden></div>
+  </section>
+
+  <!-- CLUBE -->
+  <section class="screen" id="s-clube" hidden>
+    <div class="stack">
+      <span class="eyebrow">Clube da Lu · plano de <span id="mes-nome"></span></span>
+      <h2>Monte seu plano</h2>
+    </div>
+
+    <div class="card">
+      <h3>Quais refeições?</h3>
+      <div class="seg" id="opt-ref">
+        <button class="opt" data-v="almoco">Almoço<small>11h–13h</small></button>
+        <button class="opt" data-v="janta">Janta<small>18h–20h</small></button>
+        <button class="opt" data-v="ambos">As duas<small>maior desconto</small></button>
+      </div>
+      <h3>Quais dias?</h3>
+      <div class="seg two" id="opt-dias">
+        <button class="opt" data-v="5">Seg a sex<small id="d5"></small></button>
+        <button class="opt" data-v="6">Seg a sáb<small id="d6"></small></button>
+      </div>
+      <div class="row between">
+        <h3>Pessoas</h3>
+        <div class="stepper"><button id="p-menos" aria-label="Menos uma pessoa">−</button><output id="p-n">1</output><button id="p-mais" aria-label="Mais uma pessoa">+</button></div>
+      </div>
+    </div>
+
+    <div class="summary" id="resumo"></div>
+
+    <div class="card">
+      <h3>O que vem no Clube</h3>
+      <ul class="perks">
+        <li>Você escolhe o prato de cada dia do mês (ou deixa a Lu escolher)</li>
+        <li>Entrega grátis em janela fixa, sem taxa por pedido</li>
+        <li>Endereço do almoço pode ser diferente do da janta</li>
+        <li>Pausa de até 5 dias no mês, que viram crédito</li>
+        <li>Pagamento único por Pix Automático ou cartão</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Regras combinadas</h3>
+      <ol class="rules">
+        <li>Troca de prato até as 20h do dia anterior.</li>
+        <li>Feriados não são cobrados.</li>
+        <li>Entrega sem ninguém para receber não vira crédito.</li>
+        <li>Renova sozinho todo mês; cancela com 7 dias de aviso.</li>
+      </ol>
+    </div>
+    <button class="btn btn-couve btn-block" id="assinar">Assinar e escolher meus pratos</button>
+  </section>
+
+  <!-- MEU MÊS -->
+  <section class="screen" id="s-mes" hidden>
+    <div class="stack">
+      <span class="eyebrow">Assinante · plano <span id="mes-plano"></span></span>
+      <h2>Meu cardápio de <span id="mes-nome2"></span></h2>
+      <p class="small muted" style="margin:0">Toque num dia para trocar o prato ou pausar a entrega.</p>
+    </div>
+    <div class="econ">
+      <div><span class="small muted">Economia no mês</span><b id="econ-val"></b></div>
+      <div><span class="small muted">Refeições</span><b id="econ-ref"></b></div>
+    </div>
+    <div class="stack">
+      <div class="cal-head"><div>Dom</div><div>Seg</div><div>Ter</div><div>Qua</div><div>Qui</div><div>Sex</div><div>Sáb</div></div>
+      <div class="cal" id="cal"></div>
+      <div class="legend"><span><i style="background:var(--laranja)"></i>Pausado</span><span><i style="border:1.5px dashed var(--muted)"></i>Sem entrega</span><span><i style="background:var(--couve)"></i>Prato escolhido</span></div>
+    </div>
+    <div class="card daypanel" id="daypanel"></div>
+  </section>
+
+  <!-- PAINEL DA LU -->
+  <section class="screen" id="s-lu" hidden>
+    <div class="stack">
+      <span class="eyebrow">Painel da Lu · dados de exemplo</span>
+      <h2 id="lu-titulo">Produção de amanhã</h2>
+    </div>
+    <div class="kpis">
+      <div class="kpi"><b id="k-ass">28</b><span>assinantes ativos</span></div>
+      <div class="kpi"><b id="k-ref"></b><span>marmitas do Clube amanhã</span></div>
+      <div class="kpi"><b>R$ 31,8 mil</b><span>receita do Clube no mês</span></div>
+    </div>
+    <div class="card">
+      <div class="row between"><h3>O que cozinhar</h3><span class="small muted">almoço + janta</span></div>
+      <div class="bars" id="bars"></div>
+    </div>
+    <div class="card">
+      <div class="row between"><h3>Rota do motoboy · almoço</h3><span class="small muted" id="stops-n"></span></div>
+      <div class="route" id="route"></div>
+    </div>
+    <div class="card">
+      <h3>Precisa de atenção</h3>
+      <div class="route">
+        <div class="stop"><span class="win">Hoje</span><span>Pix Automático de 2 assinantes falhou</span><span class="pill bad">cobrar</span></div>
+        <div class="stop"><span class="win">Sex</span><span>5 planos renovam esta semana</span><span class="pill warn">renova</span></div>
+        <div class="stop"><span class="win">Amanhã</span><span>3 assinantes pausaram a janta</span><span class="pill ok">ok</span></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="cartbar" id="cartbar" hidden><span id="cart-txt"></span><span>Ver sacola →</span></div>
+<div class="toast" id="toast" hidden></div>
+
+<nav class="tabs" aria-label="Telas">
+  <div class="inner">
+    <button data-go="inicio" aria-current="page"><svg viewBox="0 0 24 24"><path d="M4 11l8-7 8 7v9H4z"/><path d="M10 20v-5h4v5"/></svg>Início</button>
+    <button data-go="clube"><svg viewBox="0 0 24 24"><path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.4 6.8 19.1l1-5.8L3.5 9.2l5.9-.9z"/></svg>Clube</button>
+    <button data-go="mes"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg>Meu mês</button>
+    <button data-go="lu" class="lu"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Painel da Lu</button>
+  </div>
+</nav>
+
+<script>
+(function () {
+  // ---------- Dados de exemplo ----------
+  var BASE = 30;        // preço avulso de uma marmita (exemplo)
+  var FRETE = 7;        // frete médio do pedido avulso em Jacarepaguá (exemplo)
+  var DESC = { almoco: 0.10, janta: 0.10, ambos: 0.15 };
+  var PRATOS = [
+    { id: "feij", nome: "Feijoada completa", desc: "Arroz, couve, farofa, laranja e torresmo", cat: "Clássicos", cor: "#241a1c", tag: "carro-chefe" },
+    { id: "frango", nome: "Frango assado com farofa", desc: "Arroz, feijão e salada", cat: "Clássicos", cor: "#b86a24" },
+    { id: "bife", nome: "Bife acebolado", desc: "Arroz, feijão, fritas e salada", cat: "Clássicos", cor: "#7a3b2a" },
+    { id: "strog", nome: "Strogonoff de frango", desc: "Arroz branco e batata palha", cat: "Clássicos", cor: "#c4892f" },
+    { id: "escond", nome: "Escondidinho de carne seca", desc: "Purê de aipim gratinado", cat: "Da casa", cor: "#9a5b2e" },
+    { id: "assada", nome: "Carne assada", desc: "Arroz, feijão e legumes", cat: "Da casa", cor: "#5b2d22" },
+    { id: "picad", nome: "Picadinho", desc: "Arroz, farofa e ovo frito", cat: "Da casa", cor: "#8a4630" },
+    { id: "peixe", nome: "Peixe empanado", desc: "Arroz, purê e salada", cat: "Leves", cor: "#3f7a8a" },
+    { id: "grelh", nome: "Frango grelhado", desc: "Arroz integral e legumes", cat: "Leves", cor: "#2f6b3a" },
+    { id: "veg", nome: "Moqueca de banana", desc: "Arroz e farofa de dendê", cat: "Leves", cor: "#d89a1c", tag: "vegetariano" }
+  ];
+  var byId = {}; PRATOS.forEach(function (p) { byId[p.id] = p; });
+  var MESES = ["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"];
+  var SEMANA = ["domingo","segunda","terça","quarta","quinta","sexta","sábado"];
+  // Próximo mês a partir de hoje
+  var hoje = new Date();
+  var ANO = hoje.getMonth() === 11 ? hoje.getFullYear() + 1 : hoje.getFullYear();
+  var MES = (hoje.getMonth() + 1) % 12;
+  // Feriados nacionais fixos (mês 0-indexado) + 20/11
+  var FERIADOS = { "0-1":"Ano Novo","3-21":"Tiradentes","4-1":"Dia do Trabalho","8-7":"Independência","9-12":"N. Sra. Aparecida","10-2":"Finados","10-15":"Proclamação","10-20":"Consciência Negra","11-25":"Natal" };
+
+  var state = { ref: "ambos", dias: 5, pessoas: 1, cat: "Todos", cart: 0, cartTotal: 0, escolhas: {}, pausas: {}, diaSel: null };
+
+  function brl(v) { return "R$ " + v.toFixed(2).replace(".", ",").replace(/\B(?=(\d{3})+(?!\d))/g, "."); }
+  function $(id) { return document.getElementById(id); }
+  function toast(t) { var el = $("toast"); el.textContent = t; el.hidden = false; clearTimeout(toast._t); toast._t = setTimeout(function () { el.hidden = true; }, 2200); }
+
+  function diasDoMes(nDias) {
+    var out = [], n = new Date(ANO, MES + 1, 0).getDate();
+    for (var d = 1; d <= n; d++) {
+      var dt = new Date(ANO, MES, d), w = dt.getDay();
+      var fer = FERIADOS[MES + "-" + d];
+      var entrega = w !== 0 && (nDias === 6 || w !== 6) && !fer;
+      out.push({ d: d, w: w, fer: fer, entrega: entrega });
+    }
+    return out;
+  }
+  function contaDias(nDias) { return diasDoMes(nDias).filter(function (x) { return x.entrega; }).length; }
+  function refPorDia() { return state.ref === "ambos" ? 2 : 1; }
+  function precoRef() { return BASE * (1 - DESC[state.ref]); }
+
+  // ---------- Navegação ----------
+  var telas = ["inicio", "clube", "mes", "lu"];
+  function go(t) {
+    telas.forEach(function (x) { $("s-" + x).hidden = x !== t; });
+    document.querySelectorAll("nav.tabs button").forEach(function (b) { b.toggleAttribute("aria-current", b.dataset.go === t); if (b.dataset.go === t) b.setAttribute("aria-current", "page"); });
+    $("cartbar").hidden = !(t === "inicio" && state.cart > 0);
+    if (t === "mes") renderMes();
+    if (t === "lu") renderLu();
+    window.scrollTo(0, 0);
+  }
+  document.addEventListener("click", function (e) { var b = e.target.closest("[data-go]"); if (b) go(b.dataset.go); });
+
+  // ---------- Início ----------
+  function renderCats() {
+    var cats = ["Todos"].concat(Array.from(new Set(PRATOS.map(function (p) { return p.cat; }))));
+    $("cats").innerHTML = cats.map(function (c) { return '<button class="chip" aria-pressed="' + (c === state.cat) + '" data-cat="' + c + '">' + c + "</button>"; }).join("");
+  }
+  function renderMenu() {
+    var lista = PRATOS.filter(function (p) { return state.cat === "Todos" || p.cat === state.cat; });
+    $("menu").innerHTML = lista.map(function (p) {
+      return '<div class="dish"><div class="pic" style="background:' + p.cor + '">' + p.nome.charAt(0) + '</div>' +
+        '<div class="info"><h3>' + p.nome + (p.tag ? '<span class="tag">' + p.tag + "</span>" : "") + "</h3><p>" + p.desc + "</p>" +
+        '<span class="price">' + brl(BASE) + '</span> <span class="price-club">no Clube: ' + brl(BASE * (1 - DESC.ambos)) + "</span></div>" +
+        '<button class="add" data-add="' + p.id + '" aria-label="Adicionar ' + p.nome + '">+</button></div>';
+    }).join("");
+  }
+  $("cats").addEventListener("click", function (e) { var b = e.target.closest("[data-cat]"); if (!b) return; state.cat = b.dataset.cat; renderCats(); renderMenu(); });
+  $("menu").addEventListener("click", function (e) {
+    var b = e.target.closest("[data-add]"); if (!b) return;
+    state.cart++; state.cartTotal += BASE;
+    $("cart-txt").textContent = state.cart + (state.cart > 1 ? " itens · " : " item · ") + brl(state.cartTotal + FRETE);
+    $("cartbar").hidden = false;
+    var n = $("nudge"); n.hidden = false;
+    n.innerHTML = "<b>No Clube da Lu</b> esse pedido sairia por " + brl(state.cartTotal * (1 - DESC.ambos)) + ", sem frete. Você economizaria " + brl(state.cartTotal * DESC.ambos + FRETE) + ". <a href=\"#\" data-go=\"clube\" style=\"color:inherit;font-weight:700\">Conhecer o Clube</a>";
+    toast(byId[b.dataset.add].nome + " na sacola");
+  });
+  $("nudge").addEventListener("click", function (e) { if (e.target.closest("a")) e.preventDefault(); });
+
+  // ---------- Clube ----------
+  function marca(grupo, val) { document.querySelectorAll("#" + grupo + " .opt").forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.v === String(val))); }); }
+  function renderClube() {
+    marca("opt-ref", state.ref); marca("opt-dias", state.dias);
+    $("d5").textContent = contaDias(5) + " dias"; $("d6").textContent = contaDias(6) + " dias";
+    $("p-n").textContent = state.pessoas;
+    var dias = contaDias(state.dias), refs = dias * refPorDia() * state.pessoas;
+    var total = refs * precoRef();
+    var avulso = refs * BASE + dias * refPorDia() * FRETE;
+    $("resumo").innerHTML =
+      '<span class="eyebrow" style="color:inherit;opacity:.7">Seu plano em ' + MESES[MES] + "</span>" +
+      '<div class="big num">' + brl(total) + '<span style="font-family:var(--f-body);font-size:14px;font-weight:600;opacity:.75"> /mês</span></div>' +
+      '<div class="line"><span>' + refs + " refeições × " + brl(precoRef()) + "</span><span>" + brl(total) + "</span></div>" +
+      '<div class="line"><span>Mesmo pedido avulso, com frete</span><span>' + brl(avulso) + "</span></div>" +
+      '<div class="line save"><span>Você economiza</span><span>' + brl(avulso - total) + "</span></div>";
+    $("mes-nome").textContent = MESES[MES];
+  }
+  $("opt-ref").addEventListener("click", function (e) { var b = e.target.closest(".opt"); if (b) { state.ref = b.dataset.v; renderClube(); } });
+  $("opt-dias").addEventListener("click", function (e) { var b = e.target.closest(".opt"); if (b) { state.dias = +b.dataset.v; renderClube(); } });
+  $("p-menos").addEventListener("click", function () { state.pessoas = Math.max(1, state.pessoas - 1); renderClube(); });
+  $("p-mais").addEventListener("click", function () { state.pessoas = Math.min(6, state.pessoas + 1); renderClube(); });
+  $("assinar").addEventListener("click", function () { toast("Plano escolhido. Agora monte seu mês."); go("mes"); });
+
+  // ---------- Meu mês ----------
+  function pratoPadrao(d, w) { if (w === 3 || w === 6) return "feij"; return PRATOS[(d * 3) % PRATOS.length].id === "feij" ? "grelh" : PRATOS[(d * 3) % PRATOS.length].id; }
+  function renderMes() {
+    var dias = diasDoMes(state.dias);
+    var planoTxt = { almoco: "Almoço", janta: "Janta", ambos: "Almoço + janta" }[state.ref] + (state.dias === 5 ? ", seg a sex" : ", seg a sáb");
+    $("mes-plano").textContent = planoTxt; $("mes-nome2").textContent = MESES[MES];
+    var html = "";
+    for (var i = 0; i < dias[0].w; i++) html += "<div></div>";
+    var ativos = 0;
+    dias.forEach(function (x) {
+      if (!x.entrega) { html += '<div class="day off" aria-hidden="true"><span class="d">' + x.d + '</span><span class="lbl">' + (x.fer || "") + "</span></div>"; return; }
+      if (!state.escolhas[x.d]) state.escolhas[x.d] = pratoPadrao(x.d, x.w);
+      var p = byId[state.escolhas[x.d]], pausa = state.pausas[x.d];
+      if (!pausa) ativos++;
+      html += '<button class="day' + (pausa ? " paused" : "") + (state.diaSel === x.d ? " sel" : "") + '" data-dia="' + x.d + '" aria-label="Dia ' + x.d + ": " + (pausa ? "pausado" : p.nome) + '">' +
+        '<span class="d">' + x.d + '</span><span class="lbl">' + (pausa ? "pausado" : p.nome) + '</span><span class="dot" style="background:' + (pausa ? "var(--laranja)" : p.cor) + '"></span></button>';
+    });
+    $("cal").innerHTML = html;
+    var refs = ativos * refPorDia() * state.pessoas;
+    $("econ-ref").textContent = refs;
+    $("econ-val").textContent = brl(refs * (BASE - precoRef()) + ativos * refPorDia() * FRETE);
+    if (state.diaSel == null) state.diaSel = dias.filter(function (x) { return x.entrega; })[0].d;
+    renderDia();
+  }
+  function renderDia() {
+    var d = state.diaSel, dt = new Date(ANO, MES, d), pausa = state.pausas[d];
+    var nPausas = Object.keys(state.pausas).filter(function (k) { return state.pausas[k]; }).length;
+    $("daypanel").innerHTML =
+      '<div class="row between"><h3>' + SEMANA[dt.getDay()] + ", " + d + " de " + MESES[MES] + '</h3><span class="small muted">troca até 20h da véspera</span></div>' +
+      '<div class="choices">' + PRATOS.map(function (p) {
+        return '<button class="pick" data-prato="' + p.id + '" aria-pressed="' + (!pausa && state.escolhas[d] === p.id) + '"><span>' + p.nome + "</span><small>" + p.cat + "</small></button>";
+      }).join("") + "</div>" +
+      '<button class="btn btn-ghost btn-block" id="pausar">' + (pausa ? "Retomar entrega neste dia" : "Pausar este dia (" + nPausas + "/5 usadas)") + "</button>";
+    document.querySelectorAll("#cal .day").forEach(function (b) { b.classList.toggle("sel", +b.dataset.dia === d); });
+  }
+  $("cal").addEventListener("click", function (e) { var b = e.target.closest("[data-dia]"); if (!b) return; state.diaSel = +b.dataset.dia; renderDia(); });
+  $("daypanel").addEventListener("click", function (e) {
+    var b = e.target.closest("[data-prato]");
+    if (b) { state.escolhas[state.diaSel] = b.dataset.prato; state.pausas[state.diaSel] = false; renderMes(); toast("Dia " + state.diaSel + ": " + byId[b.dataset.prato].nome); return; }
+    if (e.target.closest("#pausar")) {
+      var d = state.diaSel, n = Object.keys(state.pausas).filter(function (k) { return state.pausas[k]; }).length;
+      if (!state.pausas[d] && n >= 5) { toast("Você já usou as 5 pausas do mês"); return; }
+      state.pausas[d] = !state.pausas[d]; renderMes();
+      toast(state.pausas[d] ? "Dia " + d + " pausado. Vira crédito no próximo mês." : "Entrega do dia " + d + " retomada");
+    }
+  });
+
+  // ---------- Painel da Lu ----------
+  var PROD = [["feij", 19], ["grelh", 9], ["strog", 7], ["escond", 6], ["frango", 5], ["veg", 4], ["bife", 3], ["peixe", 3]];
+  var ROTA = [
+    ["11:00", "Freguesia · 6 entregas", "saiu", "ok"], ["11:25", "Pechincha · 4 entregas", "na fila", "warn"],
+    ["11:45", "Taquara · 5 entregas", "na fila", "warn"], ["12:10", "Tanque · 3 entregas", "na fila", "warn"],
+    ["12:30", "Anil · 3 entregas", "na fila", "warn"], ["12:50", "Curicica · 2 entregas", "na fila", "warn"]
+  ];
+  function renderLu() {
+    var tot = PROD.reduce(function (s, x) { return s + x[1]; }, 0), max = PROD[0][1];
+    $("k-ref").textContent = tot;
+    $("bars").innerHTML = PROD.map(function (x) {
+      return '<div class="bar"><span>' + byId[x[0]].nome + "</span><b>" + x[1] + '</b><div class="track"><div class="fill" style="width:' + (x[1] / max * 100) + '%"></div></div></div>';
+    }).join("");
+    $("route").innerHTML = ROTA.map(function (r) { return '<div class="stop"><span class="win">' + r[0] + "</span><span>" + r[1] + '</span><span class="pill ' + r[3] + '">' + r[2] + "</span></div>"; }).join("");
+    $("stops-n").textContent = "23 paradas em 6 bairros";
+  }
+
+  $("banner-txt").textContent = "A partir de " + brl(BASE * (1 - DESC.ambos)) + " por refeição, com entrega grátis em horário fixo.";
+  renderCats(); renderMenu(); renderClube();
+})();
+</script>
