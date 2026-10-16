@@ -82,4 +82,4 @@ Fases:
 
 ## Protótipo
 
-`prototipo/index.html` é um protótipo navegável com 4 telas: Início (pedido avulso com convite ao Clube), Clube (montador de plano com preço do mês), Meu mês (calendário com escolha de prato e pausa) e Gestão (pedidos, cozinha, entregas, caixa e assinantes). Cardápio, preços e pedidos são exemplos.
+`prototipo/index.html` é um protótipo navegável com 4 telas: Início (pedido avulso com convite ao Clube), Clube (montador de plano com preço do mês), Meu mês (calendário com escolha de prato e pausa) e Gestão (pedidos, cozinha, entregas, caixa e assinantes). Cardápio e preços são os reais da Lu; pedidos e números da gestão são exemplos.
