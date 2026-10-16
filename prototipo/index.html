@@ -142,6 +142,22 @@ section.screen { display: flex; flex-direction: column; gap: 22px; }
 .pill.ok { background: var(--couve-soft); color: var(--couve); }
 .pill.warn { background: var(--laranja-soft); color: var(--ink); }
 .pill.bad { background: var(--danger); color: var(--on-accent); }
+.pill.ch { background: var(--line); color: var(--ink); }
+.pill.ch-ifood { background: var(--danger); color: var(--on-accent); }
+.pill.ch-clube { background: var(--ink); color: var(--bg); }
+.order { background: var(--surface); border-radius: 14px; padding: 12px 14px; box-shadow: var(--shadow); display: grid; gap: 6px; border-left: 4px solid var(--line); }
+.order.st-novo { border-left-color: var(--danger); }
+.order.st-preparo { border-left-color: var(--laranja); }
+.order.st-saiu { border-left-color: var(--couve); }
+.order.st-entregue { opacity: .6; }
+.order .top { display: flex; justify-content: space-between; gap: 8px; align-items: center; flex-wrap: wrap; }
+.order .top b { font-variant-numeric: tabular-nums; }
+.order p { margin: 0; font-size: 13.5px; }
+.order .act { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.btn-sm { padding: 7px 12px; font-size: 13px; }
+.money { display: grid; gap: 0; }
+.money .stop { grid-template-columns: minmax(0, 1fr) auto auto; }
+.money .stop span:nth-child(n+2) { text-align: right; font-variant-numeric: tabular-nums; }
 
 /* Navegação */
 nav.tabs { position: fixed; left: 0; right: 0; bottom: 0; background: var(--surface); border-top: 1px solid var(--line); padding-bottom: env(safe-area-inset-bottom, 0px); padding-left: max(8px, env(safe-area-inset-left, 0px)); padding-right: max(8px, env(safe-area-inset-right, 0px)); z-index: 6; }
@@ -249,30 +265,16 @@ nav.tabs .lu { color: var(--laranja); }
   <!-- PAINEL DA LU -->
   <section class="screen" id="s-lu" hidden>
     <div class="stack">
-      <span class="eyebrow">Painel da Lu · dados de exemplo</span>
-      <h2 id="lu-titulo">Produção de amanhã</h2>
+      <span class="eyebrow">Gestão da loja · dados de exemplo</span>
+      <h2>Hoje na Feijuca</h2>
     </div>
     <div class="kpis">
-      <div class="kpi"><b id="k-ass">28</b><span>assinantes ativos</span></div>
-      <div class="kpi"><b id="k-ref"></b><span>marmitas do Clube amanhã</span></div>
-      <div class="kpi"><b>R$ 31,8 mil</b><span>receita do Clube no mês</span></div>
+      <div class="kpi"><b id="k-ped"></b><span>pedidos hoje</span></div>
+      <div class="kpi"><b id="k-fila"></b><span>em aberto agora</span></div>
+      <div class="kpi"><b id="k-ass">28</b><span>assinantes do Clube</span></div>
     </div>
-    <div class="card">
-      <div class="row between"><h3>O que cozinhar</h3><span class="small muted">almoço + janta</span></div>
-      <div class="bars" id="bars"></div>
-    </div>
-    <div class="card">
-      <div class="row between"><h3>Rota do motoboy · almoço</h3><span class="small muted" id="stops-n"></span></div>
-      <div class="route" id="route"></div>
-    </div>
-    <div class="card">
-      <h3>Precisa de atenção</h3>
-      <div class="route">
-        <div class="stop"><span class="win">Hoje</span><span>Pix Automático de 2 assinantes falhou</span><span class="pill bad">cobrar</span></div>
-        <div class="stop"><span class="win">Sex</span><span>5 planos renovam esta semana</span><span class="pill warn">renova</span></div>
-        <div class="stop"><span class="win">Amanhã</span><span>3 assinantes pausaram a janta</span><span class="pill ok">ok</span></div>
-      </div>
-    </div>
+    <div class="chips" id="lu-tabs"></div>
+    <div class="stack" id="lu-body"></div>
   </section>
 </div>
 
@@ -284,7 +286,7 @@ nav.tabs .lu { color: var(--laranja); }
     <button data-go="inicio" aria-current="page"><svg viewBox="0 0 24 24"><path d="M4 11l8-7 8 7v9H4z"/><path d="M10 20v-5h4v5"/></svg>Início</button>
     <button data-go="clube"><svg viewBox="0 0 24 24"><path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.4 6.8 19.1l1-5.8L3.5 9.2l5.9-.9z"/></svg>Clube</button>
     <button data-go="mes"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg>Meu mês</button>
-    <button data-go="lu" class="lu"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Painel da Lu</button>
+    <button data-go="lu" class="lu"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Gestão</button>
   </div>
 </nav>
 
@@ -451,15 +453,86 @@ nav.tabs .lu { color: var(--laranja); }
     ["11:45", "Taquara · 5 entregas", "na fila", "warn"], ["12:10", "Tanque · 3 entregas", "na fila", "warn"],
     ["12:30", "Anil · 3 entregas", "na fila", "warn"], ["12:50", "Curicica · 2 entregas", "na fila", "warn"]
   ];
+  // Pedidos de exemplo: canal = app | whats | ifood | clube
+  var STATUS = { novo: "Novo", preparo: "Preparando", saiu: "Saiu p/ entrega", entregue: "Entregue" };
+  var PROX = { novo: "preparo", preparo: "saiu", saiu: "entregue" };
+  var BTN = { novo: "Aceitar e preparar", preparo: "Marcar como saiu", saiu: "Confirmar entrega" };
+  var CANAL = { app: ["App", "ch"], whats: ["WhatsApp", "ch"], ifood: ["iFood", "ch-ifood"], clube: ["Clube", "ch-clube"] };
+  var PEDIDOS = [
+    { n: 1062, cli: "Marcos R.", bairro: "Freguesia", itens: "2× Feijoada completa", tot: 60, canal: "app", st: "novo", pg: "Pix pago" },
+    { n: 1061, cli: "Ana Paula", bairro: "Taquara", itens: "1× Strogonoff, 1× Frango grelhado", tot: 60, canal: "whats", st: "novo", pg: "Paga na entrega" },
+    { n: 1060, cli: "Cliente iFood", bairro: "Pechincha", itens: "1× Feijoada completa", tot: 30, canal: "ifood", st: "preparo", pg: "Pago no iFood" },
+    { n: 1059, cli: "Rota Freguesia", bairro: "Freguesia", itens: "6 marmitas do Clube", tot: 0, canal: "clube", st: "saiu", pg: "Assinatura" },
+    { n: 1058, cli: "Júlio C.", bairro: "Anil", itens: "1× Escondidinho de carne seca", tot: 30, canal: "app", st: "preparo", pg: "Cartão pago" },
+    { n: 1057, cli: "Cliente iFood", bairro: "Tanque", itens: "2× Bife acebolado", tot: 60, canal: "ifood", st: "saiu", pg: "Pago no iFood" },
+    { n: 1056, cli: "Dona Cida", bairro: "Pechincha", itens: "3× Feijoada completa", tot: 90, canal: "whats", st: "entregue", pg: "Pix pago" }
+  ];
+  var luTab = "Pedidos", proxN = 1063;
+  var CLUBE = [
+    ["Fernanda M.", "Almoço + janta · Freguesia", "ativo", "ok"], ["Roberto e família (3)", "Almoço · Taquara", "ativo", "ok"],
+    ["Patrícia L.", "Janta · Pechincha", "pausa amanhã", "warn"], ["Carlos A.", "Almoço + janta · Anil", "Pix falhou", "bad"],
+    ["Luana S.", "Almoço · Curicica", "renova sex", "warn"], ["Thiago B.", "Almoço + janta · Tanque", "Pix falhou", "bad"]
+  ];
+
   function renderLu() {
-    var tot = PROD.reduce(function (s, x) { return s + x[1]; }, 0), max = PROD[0][1];
-    $("k-ref").textContent = tot;
-    $("bars").innerHTML = PROD.map(function (x) {
-      return '<div class="bar"><span>' + byId[x[0]].nome + "</span><b>" + x[1] + '</b><div class="track"><div class="fill" style="width:' + (x[1] / max * 100) + '%"></div></div></div>';
+    var abertos = PEDIDOS.filter(function (p) { return p.st !== "entregue"; }).length;
+    $("k-ped").textContent = 61 + PEDIDOS.length - 7;
+    $("k-fila").textContent = abertos;
+    $("lu-tabs").innerHTML = ["Pedidos", "Cozinha", "Entregas", "Caixa", "Clube"].map(function (t) {
+      return '<button class="chip" aria-pressed="' + (t === luTab) + '" data-lutab="' + t + '">' + t + "</button>";
     }).join("");
-    $("route").innerHTML = ROTA.map(function (r) { return '<div class="stop"><span class="win">' + r[0] + "</span><span>" + r[1] + '</span><span class="pill ' + r[3] + '">' + r[2] + "</span></div>"; }).join("");
-    $("stops-n").textContent = "23 paradas em 6 bairros";
+    var h = "";
+    if (luTab === "Pedidos") {
+      h += '<div class="row between"><span class="small muted">App, WhatsApp, iFood e Clube numa fila só</span><button class="btn btn-couve btn-sm" id="novo-ped">+ Pedido do WhatsApp</button></div>';
+      PEDIDOS.forEach(function (p, i) {
+        var c = CANAL[p.canal];
+        h += '<div class="order st-' + p.st + '"><div class="top"><span><b>#' + p.n + "</b> · " + p.cli + '</span><span class="pill ' + c[1] + '">' + c[0] + "</span></div>" +
+          "<p>" + p.itens + '</p><p class="muted small">' + p.bairro + " · " + (p.tot ? brl(p.tot) + " · " : "") + p.pg + "</p>" +
+          '<div class="act"><span class="small"><b>' + STATUS[p.st] + "</b></span>" +
+          (PROX[p.st] ? '<button class="btn btn-ghost btn-sm" data-avanca="' + i + '">' + BTN[p.st] + "</button>" : "") + "</div></div>";
+      });
+    } else if (luTab === "Cozinha") {
+      var max = PROD[0][1], tot = PROD.reduce(function (s, x) { return s + x[1]; }, 0);
+      h += '<div class="card"><div class="row between"><h3>Clube de amanhã</h3><span class="small muted num">' + tot + ' marmitas</span></div><div class="bars">' +
+        PROD.map(function (x) { return '<div class="bar"><span>' + byId[x[0]].nome + "</span><b>" + x[1] + '</b><div class="track"><div class="fill" style="width:' + (x[1] / max * 100) + '%"></div></div></div>'; }).join("") +
+        '</div><p class="small muted" style="margin:0">Fechado às 20h de hoje, quando acaba o prazo de troca dos assinantes.</p></div>';
+      h += '<div class="card"><h3>Avulsos de hoje até agora</h3><div class="bars">' +
+        [["Feijoada completa", 23], ["Bife acebolado", 9], ["Strogonoff de frango", 8], ["Escondidinho de carne seca", 7], ["Outros", 14]].map(function (x) {
+          return '<div class="bar"><span>' + x[0] + "</span><b>" + x[1] + '</b><div class="track"><div class="fill" style="width:' + (x[1] / 23 * 100) + '%;background:var(--laranja)"></div></div></div>';
+        }).join("") + "</div></div>";
+    } else if (luTab === "Entregas") {
+      h += '<div class="card"><div class="row between"><h3>Rota do Clube · almoço</h3><span class="small muted">23 paradas, 6 bairros</span></div><div class="route">' +
+        ROTA.map(function (r) { return '<div class="stop"><span class="win">' + r[0] + "</span><span>" + r[1] + '</span><span class="pill ' + r[3] + '">' + r[2] + "</span></div>"; }).join("") + "</div></div>";
+      h += '<div class="card"><h3>Avulsos esperando motoboy</h3><div class="route">' +
+        PEDIDOS.filter(function (p) { return p.st === "preparo" && p.canal !== "ifood"; }).map(function (p) {
+          return '<div class="stop"><span class="win">#' + p.n + "</span><span>" + p.cli + " · " + p.bairro + '</span><span class="pill warn">preparando</span></div>';
+        }).join("") + '</div><p class="small muted" style="margin:0">O app agrupa os avulsos do mesmo bairro numa saída só.</p></div>';
+    } else if (luTab === "Caixa") {
+      var C = [["App da Lu", 1260, 0.01], ["WhatsApp", 840, 0], ["iFood", 1110, 0.262], ["Clube (diária)", 1428, 0.01]];
+      var bruto = 0, liq = 0;
+      h += '<div class="card"><div class="row between"><h3>Vendas de hoje por canal</h3><span class="small muted">bruto · fica com você</span></div><div class="money">' +
+        C.map(function (x) { var l = x[1] * (1 - x[2]); bruto += x[1]; liq += l; return '<div class="stop"><span>' + x[0] + (x[2] > 0.1 ? ' <span class="pill ch-ifood">−26%</span>' : "") + "</span><span>" + brl(x[1]) + "</span><span><b>" + brl(l) + "</b></span></div>"; }).join("") +
+        '<div class="stop"><span><b>Total</b></span><span><b>' + brl(bruto) + "</b></span><span><b>" + brl(liq) + "</b></span></div></div>" +
+        '<p class="small muted" style="margin:0">No iFood ficaram ' + brl(1110 * 0.262) + " em comissão e taxa só hoje. Cada cliente que passa para o app ou para o Clube recupera essa margem.</p></div>";
+      h += '<div class="card"><h3>A receber</h3><div class="route">' +
+        '<div class="stop"><span class="win">Hoje</span><span>2 pedidos para pagar na entrega</span><span class="pill warn">' + brl(120) + "</span></div>" +
+        '<div class="stop"><span class="win">Qua</span><span>Repasse semanal do iFood</span><span class="pill ch">' + brl(5730) + "</span></div></div></div>";
+    } else {
+      h += '<div class="card"><div class="row between"><h3>Assinantes</h3><span class="small muted">28 ativos · 2 vagas</span></div><div class="route">' +
+        CLUBE.map(function (c) { return '<div class="stop" style="grid-template-columns:minmax(0,1fr) auto"><span><b>' + c[0] + '</b><br><span class="small muted">' + c[1] + '</span></span><span class="pill ' + c[3] + '">' + c[2] + "</span></div>"; }).join("") +
+        '</div><p class="small muted" style="margin:0">Quando o Pix Automático falha, o app manda lembrete no WhatsApp do assinante.</p></div>';
+    }
+    $("lu-body").innerHTML = h;
   }
+  $("lu-tabs").addEventListener("click", function (e) { var b = e.target.closest("[data-lutab]"); if (b) { luTab = b.dataset.lutab; renderLu(); } });
+  $("lu-body").addEventListener("click", function (e) {
+    var a = e.target.closest("[data-avanca]");
+    if (a) { var p = PEDIDOS[+a.dataset.avanca]; p.st = PROX[p.st]; renderLu(); toast("#" + p.n + ": " + STATUS[p.st]); return; }
+    if (e.target.closest("#novo-ped")) {
+      PEDIDOS.unshift({ n: proxN++, cli: "Pedido por WhatsApp", bairro: "Freguesia", itens: "1× Feijoada completa", tot: 30, canal: "whats", st: "novo", pg: "Paga na entrega" });
+      renderLu(); toast("Pedido lançado na fila");
+    }
+  });
 
   $("banner-txt").textContent = "A partir de " + brl(BASE * (1 - DESC.ambos)) + " por refeição, com entrega grátis em horário fixo.";
   renderCats(); renderMenu(); renderClube();

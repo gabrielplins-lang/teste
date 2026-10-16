@@ -52,10 +52,28 @@ Exemplo, novembro de 2026, seg a sex, 1 pessoa, almoço + janta: 19 dias úteis 
 ## Ainda falta saber
 
 - Quantas marmitas a mais por dia a cozinha aguenta?
-- Usa algum sistema hoje (Saipos, Anota AI, PDV)?
 - Ticket médio real e frete cobrado hoje.
 - Quais benefícios extras entram no Clube (a definir juntos).
 
+## O app é o sistema da Lu
+
+A Lu não usa nenhum sistema hoje. O app cobre a loja inteira, não só o Clube:
+
+| Área | Para quem | O que faz |
+|---|---|---|
+| Loja (app/PWA) | Cliente | Cardápio, sacola, Pix/cartão, acompanhamento do pedido |
+| Clube | Assinante | Montar plano, calendário do mês, pausas, cobrança recorrente |
+| Pedidos | Lu | Fila única com pedidos do app, WhatsApp (lançados à mão), iFood e Clube |
+| Cozinha | Lu | Quantas marmitas de cada prato: Clube de amanhã + avulsos de hoje |
+| Entregas | Motoboy | Rota do Clube por bairro e avulsos agrupados por região |
+| Caixa | Lu | Vendas por canal, quanto ficou com ela, a receber |
+| Clube (gestão) | Lu | Assinantes, pausas, renovações, Pix que falhou |
+
+Fases:
+1. **Loja + Pedidos + Cozinha + Caixa.** Tira a Lu do papel/WhatsApp e já dá o canal próprio de venda.
+2. **Clube da Lu** com Pix Automático e o piloto de 30 vagas.
+3. **Integração com o iFood** (API de pedidos do iFood para parceiros), para os pedidos do iFood caírem direto na fila. Exige cadastro e homologação no portal de desenvolvedores do iFood. Até lá, ela segue usando o tablet do iFood.
+
 ## Protótipo
 
-`prototipo/index.html` é um protótipo navegável com 4 telas: Início (pedido avulso com convite ao Clube), Clube (montador de plano com preço do mês), Meu mês (calendário com escolha de prato e pausa) e Painel da Lu (produção do dia e rota do motoboy). Cardápio, preços e pedidos são exemplos.
+`prototipo/index.html` é um protótipo navegável com 4 telas: Início (pedido avulso com convite ao Clube), Clube (montador de plano com preço do mês), Meu mês (calendário com escolha de prato e pausa) e Gestão (pedidos, cozinha, entregas, caixa e assinantes). Cardápio, preços e pedidos são exemplos.
